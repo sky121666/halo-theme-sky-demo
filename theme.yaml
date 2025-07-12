@@ -12,8 +12,8 @@ spec:
   homepage: https://github.com/sky121666/theme-sky#readme
   repo: https://github.com/sky121666/theme-sky
   issues: https://github.com/sky121666/theme-sky/issues
-  settingName: "theme-modern-starter-setting"
-  configMapName: "theme-modern-starter-configMap"
+  settingName: "theme-sky-setting"
+  configMapName: "theme-sky-configMap"
   version: "1.0.0"
   requires: "2.0.0"
   license:
