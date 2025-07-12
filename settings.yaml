@@ -1,39 +1,156 @@
 apiVersion: v1alpha1
 kind: Setting
 metadata:
-  name: theme-modern-starter-setting
+  name: theme-sky-setting
 spec:
   forms:
+    - group: basic
+      label: 基础设置
+      formSchema:
+        - $formkit: radio
+          name: color_scheme
+          label: 配色方案
+          value: system
+          options:
+            - label: 跟随系统
+              value: system
+            - label: 深色模式
+              value: dark
+            - label: 浅色模式
+              value: light
+        - $formkit: select
+          name: theme_color
+          label: 主题色彩
+          value: blue
+          options:
+            - value: blue
+              label: 蓝色
+            - value: green
+              label: 绿色
+            - value: purple
+              label: 紫色
+            - value: pink
+              label: 粉色
+            - value: orange
+              value: orange
+              label: 橙色
+        - $formkit: checkbox
+          name: enable_animations
+          label: 启用动画效果
+          value: true
+        - $formkit: checkbox
+          name: enable_back_to_top
+          label: 显示返回顶部按钮
+          value: true
+    - group: layout
+      label: 布局设置
+      formSchema:
+        - $formkit: radio
+          name: layout_style
+          label: 布局风格
+          value: default
+          options:
+            - label: 默认布局
+              value: default
+            - label: 紧凑布局
+              value: compact
+            - label: 宽屏布局
+              value: wide
+        - $formkit: checkbox
+          name: show_sidebar
+          label: 显示侧边栏
+          value: true
+        - $formkit: checkbox
+          name: sticky_header
+          label: 固定顶部导航
+          value: false
     - group: post
-      label: 文章
+      label: 文章设置
       formSchema:
         - $formkit: select
           name: content_size
           label: 字体大小
           value: prose-base
           options:
-            - value: prose-base
-              label: prose-base
             - value: prose-sm
-              label: prose-sm
+              label: 小号字体
+            - value: prose-base
+              label: 标准字体
             - value: prose-lg
-              label: prose-lg
+              label: 大号字体
             - value: prose-xl
-              label: prose-xl
+              label: 特大字体
             - value: prose-2xl
-              label: prose-2xl
-        - $formkit: select
+              label: d
           name: content_theme
-          label: 颜色主题
+          label: 文章配色
           value: prose-gray
           options:
             - value: prose-gray
-              label: prose-gray
+              label: 灰色调
             - value: prose-slate
-              label: prose-slate
+              label: 石板色
             - value: prose-zinc
-              label: prose-zinc
+              label: 锌色调
             - value: prose-neutral
-              label: prose-neutral
+              label: 中性色
             - value: prose-stone
-              label: prose-stone
+              label: 石头色
+        - $formkit: checkbox
+          name: show_reading_time
+          label: 显示阅读时间
+          value: true
+        - $formkit: checkbox
+          name: show_word_count
+          label: 显示字数统计
+          value: false
+        - $formkit: checkbox
+          name: enable_code_copy
+          label: 启用代码复制按钮
+          value: true
+    - group: social
+      label: 社交设置
+      formSchema:
+        - $formkit: text
+          name: github_url
+          label: GitHub 链接
+          value: ""
+          placeholder: "https://github.com/username"
+        - $formkit: text
+          name: twitter_url
+          label: Twitter 链接
+          value: ""
+          placeholder: "https://twitter.com/username"
+        - $formkit: text
+          name: email
+          label: 邮箱地址
+          value: ""
+          placeholder: "your@email.com"
+        - $formkit: checkbox
+          name: show_social_share
+          label: 显示社交分享按钮
+          value: true
+    - group: advanced
+      label: 高级设置
+      formSchema:
+        - $formkit: textarea
+          name: custom_css
+          label: 自定义 CSS
+          value: ""
+          placeholder: "/* 在此添加自定义样式 */"
+          rows: 6
+        - $formkit: textarea
+          name: custom_js
+          label: 自定义 JavaScript
+          value: ""
+          placeholder: "// 在此添加自定义脚本"
+          rows: 6
+        - $formkit: text
+          name: google_analytics_id
+          label: Google Analytics ID
+          value: ""
+          placeholder: "G-XXXXXXXXXX"
+        - $formkit: checkbox
+          name: enable_pjax
+          label: 启用 PJAX 加速
+          value: false

@@ -1,21 +1,21 @@
 apiVersion: theme.halo.run/v1alpha1
 kind: Theme
 metadata:
-  name: theme-modern-starter
+  name: theme-sky
 spec:
-  displayName: Modern Starter
+  displayName: sky_blog_1
   author:
-    name: Halo
-    website: https://github.com/halo-dev
-  description: A development starter theme with Vite Ecosystem for Halo
+    name: sky
+    website: https://github.com/sky121666
+  description: 基于Vite、Tailwind CSS、DaisyUI和Alpine.js的现代化Halo主题
   logo: https://www.halo.run/logo
-  homepage: https://github.com/halo-dev/theme-modern-starter#readme
-  repo: https://github.com/halo-dev/theme-modern-starter
-  issues: https://github.com/halo-dev/theme-modern-starter/issues
+  homepage: https://github.com/sky121666/theme-sky#readme
+  repo: https://github.com/sky121666/theme-sky
+  issues: https://github.com/sky121666/theme-sky/issues
   settingName: "theme-modern-starter-setting"
   configMapName: "theme-modern-starter-configMap"
   version: "1.0.0"
   requires: "2.0.0"
   license:
-    - name: "GPL-3.0"
-      url: "https://github.com/halo-dev/theme-modern-starter/blob/main/LICENSE"
+    - name: "MIT"
+      url: "https://github.com/sky121666/theme-sky/blob/main/LICENSE"
