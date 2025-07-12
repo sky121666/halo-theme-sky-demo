@@ -101,8 +101,6 @@ pnpm prettier
 # 构建主题包
 pnpm build
 
-# 在 Halo 中安装测试
-# 将生成的 .halo 文件上传到 Halo 后台
 ```
 
 ## 📖 技术栈与依赖
@@ -363,6 +361,7 @@ git commit -m "style: 优化样式"
 - [DaisyUI](https://daisyui.com) - 美观的UI组件库
 - [Alpine.js](https://alpinejs.dev) - 轻量级JavaScript框架
 - [Iconify](https://iconify.design) - 统一的图标框架
+- [halo-theme](https://github.com/halo-dev/theme-modern-starter#) -halo开发模版 参考用
 
 ---
 
