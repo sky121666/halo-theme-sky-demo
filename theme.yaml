@@ -1,21 +1,21 @@
 apiVersion: theme.halo.run/v1alpha1
 kind: Theme
 metadata:
-  name: theme-sky
+  name: theme-sky-demo
 spec:
-  displayName: sky_blog_1
+  displayName: sky_blog_demo_1
   author:
     name: sky
     website: https://github.com/sky121666
   description: 基于Vite、Tailwind CSS、DaisyUI和Alpine.js的现代化Halo主题
   logo: https://www.halo.run/logo
-  homepage: https://github.com/sky121666/theme-sky#readme
-  repo: https://github.com/sky121666/theme-sky
-  issues: https://github.com/sky121666/theme-sky/issues
-  settingName: "theme-sky-setting"
-  configMapName: "theme-sky-configMap"
+  homepage: https://github.com/sky121666/theme-sky-demo#readme
+  repo: https://github.com/sky121666/theme-sky-demo
+  issues: https://github.com/sky121666/theme-sky-demo/issues
+  settingName: "theme-sky-demo-setting"
+  configMapName: "theme-sky-demo-configMap"
   version: "1.0.0"
   requires: "2.0.0"
   license:
     - name: "MIT"
-      url: "https://github.com/sky121666/theme-sky/blob/main/LICENSE"
+      url: "https://github.com/sky121666/theme-sky-demo/blob/main/LICENSE"

@@ -1,21 +1,628 @@
 <!doctype html>
 <html xmlns:th="https://www.thymeleaf.org" th:replace="~{modules/layout :: html(content = ~{::content})}">
   <th:block th:fragment="content">
-    <div>
-      <ul>
-        <li th:each="post : ${posts.items}">
-          <a th:text="${post.spec.title}" th:href="${post.status.permalink}"></a>
-        </li>
-      </ul>
-      <div th:if="${posts.hasPrevious() || posts.hasNext()}">
-        <a th:href="@{${posts.prevUrl}}">
-          <span>上一页</span>
-        </a>
-        <span th:text="${posts.page} +' / '+ ${posts.totalPages}"></span>
-        <a th:href="@{${posts.nextUrl}}">
-          <span>下一页</span>
-        </a>
+    <!-- 现代化样式定义 -->
+    <style>
+      /* 现代渐变动画 */
+      @keyframes gradient-shift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+      }
+      
+      @keyframes float-gentle {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-8px) rotate(1deg); }
+      }
+      
+      @keyframes slide-in-up {
+        from {
+          opacity: 0;
+          transform: translateY(40px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      
+      @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.3); }
+        50% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.6); }
+      }
+      
+      /* 玻璃拟态效果 */
+      .glass {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      .glass-dark {
+        background: rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      
+      /* 现代卡片悬停效果 */
+      .modern-card {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transform-style: preserve-3d;
+      }
+      
+      .modern-card:hover {
+        transform: translateY(-8px) rotateX(5deg);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      }
+      
+      /* 渐变文字效果 */
+      .gradient-text {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      /* 动态背景 */
+      .animated-bg {
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient-shift 15s ease infinite;
+      }
+      
+      /* 现代滚动条 */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-radius: 10px;
+      }
+      
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #764ba2, #667eea);
+      }
+      
+      /* 统一图标样式 */
+      [class*="icon-"] {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 1em;
+        height: 1em;
+        flex-shrink: 0;
+      }
+      
+      /* 特定尺寸的图标容器 */
+      .icon-container-sm {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      
+      .icon-container-md {
+        width: 2rem;
+        height: 2rem;
+      }
+      
+      .icon-container-lg {
+        width: 3rem;
+        height: 3rem;
+      }
+      
+      .icon-container-xl {
+        width: 4rem;
+        height: 4rem;
+      }
+    </style>
+    <!-- Sky Theme Demo 现代化技术栈展示 -->
+    <div class="min-h-screen animated-bg relative overflow-hidden" x-data="modernTechDemo()">
+      <!-- 动态背景粒子 -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-white rounded-full opacity-60" style="animation: float-gentle 6s ease-in-out infinite;"></div>
+        <div class="absolute top-3/4 right-1/4 w-1 h-1 bg-white rounded-full opacity-40" style="animation: float-gentle 8s ease-in-out infinite reverse;"></div>
+        <div class="absolute top-1/2 left-3/4 w-3 h-3 bg-white rounded-full opacity-30" style="animation: float-gentle 10s ease-in-out infinite;"></div>
+        <div class="absolute bottom-1/4 left-1/2 w-1.5 h-1.5 bg-white rounded-full opacity-50" style="animation: float-gentle 7s ease-in-out infinite reverse;"></div>
       </div>
+
+      <!-- 主要内容容器 -->
+      <div class="relative z-10">
+        <!-- 英雄区域 -->
+        <section class="min-h-screen flex items-center justify-center px-6">
+          <div class="text-center max-w-6xl mx-auto">
+            <!-- 主标题 -->
+            <div class="mb-8" style="animation: slide-in-up 1s ease-out;">
+              <h1 class="text-7xl md:text-8xl lg:text-9xl font-black mb-6 text-white drop-shadow-2xl">
+                Sky
+                <span class="gradient-text block">Theme</span>
+              </h1>
+              <p class="text-xl md:text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed">
+                下一代 Halo 主题 · 现代设计 · 极致性能
+              </p>
+            </div>
+            
+            <!-- 技术栈标签云 -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12" style="animation: slide-in-up 1s ease-out 0.3s both;">
+              <template x-for="(tech, index) in techStack" :key="tech.name">
+                <div class="glass rounded-full px-6 py-3 text-white font-medium hover:scale-110 transition-all duration-300 cursor-pointer"
+                     :style="`animation-delay: ${index * 0.1}s`"
+                     @mouseenter="tech.hovered = true"
+                     @mouseleave="tech.hovered = false">
+                  <div class="icon-container-sm inline-flex mr-2">
+                    <span :class="tech.icon" class="text-lg"></span>
+                  </div>
+                  <span x-text="tech.name"></span>
+                </div>
+              </template>
+            </div>
+            
+            <!-- CTA 按钮 -->
+            <div class="flex flex-col sm:flex-row gap-6 justify-center" style="animation: slide-in-up 1s ease-out 0.6s both;">
+              <button class="glass rounded-2xl px-8 py-4 text-white font-semibold text-lg hover:scale-105 transition-all duration-300 group">
+                <div class="icon-container-sm inline-flex mr-3">
+                  <span class="icon-[mdi--rocket-launch] text-xl group-hover:rotate-12 transition-transform"></span>
+                </div>
+                立即体验
+              </button>
+              <button class="glass-dark rounded-2xl px-8 py-4 text-white font-semibold text-lg hover:scale-105 transition-all duration-300 group">
+                <div class="icon-container-sm inline-flex mr-3">
+                  <span class="icon-[mdi--github] text-xl group-hover:scale-110 transition-transform"></span>
+                </div>
+                GitHub
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 功能特性展示 -->
+        <section class="py-20 px-6">
+          <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+              <h2 class="text-5xl md:text-6xl font-black text-white mb-6">
+                核心特性
+              </h2>
+              <p class="text-xl text-white/80 max-w-3xl mx-auto">
+                现代化设计理念与前沿技术的完美融合
+              </p>
+            </div>
+            
+            <!-- 特性卡片网格 -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <template x-for="(feature, index) in features" :key="feature.title">
+                <div class="glass modern-card rounded-3xl p-8 text-white group cursor-pointer"
+                     :style="`animation: slide-in-up 0.8s ease-out ${index * 0.1}s both`"
+                     @mouseenter="feature.hovered = true"
+                     @mouseleave="feature.hovered = false">
+                  <div class="mb-6">
+                    <div class="w-16 h-16 glass-dark rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <div class="icon-container-lg">
+                        <span :class="feature.icon" class="text-3xl"></span>
+                      </div>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-3" x-text="feature.title"></h3>
+                    <p class="text-white/80 leading-relaxed" x-text="feature.description"></p>
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    <template x-for="tag in feature.tags" :key="tag">
+                      <span class="glass-dark rounded-full px-3 py-1 text-sm font-medium" x-text="tag"></span>
+                    </template>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
+        </section>
+
+        <!-- 技术栈详细展示 -->
+        <section class="py-20 px-6">
+          <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+              <h2 class="text-5xl md:text-6xl font-black text-white mb-6">
+                技术栈
+              </h2>
+              <p class="text-xl text-white/80 max-w-3xl mx-auto">
+                精选现代前端技术，构建高性能主题
+              </p>
+            </div>
+            
+            <!-- 技术栈卡片 -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+              <template x-for="(tech, index) in techDetails" :key="tech.name">
+                <div class="glass modern-card rounded-3xl p-8 text-white group"
+                     :style="`animation: slide-in-up 0.8s ease-out ${index * 0.15}s both`">
+                  <div class="flex items-center mb-6">
+                    <div class="w-16 h-16 glass-dark rounded-2xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform duration-300">
+                      <div class="icon-container-lg">
+                        <span :class="tech.icon" class="text-3xl"></span>
+                      </div>
+                    </div>
+                    <div>
+                      <h3 class="text-2xl font-bold" x-text="tech.name"></h3>
+                      <p class="text-white/60" x-text="tech.version"></p>
+                    </div>
+                  </div>
+                  <p class="text-white/80 mb-4 leading-relaxed" x-text="tech.description"></p>
+                  <div class="w-full glass-dark rounded-full h-2 mb-4">
+                    <div class="bg-gradient-to-r from-purple-400 to-pink-400 h-2 rounded-full transition-all duration-1000"
+                         :style="`width: ${tech.proficiency}%`"></div>
+                  </div>
+                  <div class="flex justify-between text-sm text-white/60">
+                    <span>熟练度</span>
+                    <span x-text="tech.proficiency + '%'"></span>
+                  </div>
+                </div>
+              </template>
+            </div>
+            
+            <!-- 统计数据展示 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+              <div class="glass rounded-3xl p-6 text-white">
+                <div class="text-4xl font-black text-purple-400 mb-2">5000+</div>
+                <div class="text-white/80">代码行数</div>
+                <div class="text-white/60 text-sm mt-1">高质量代码</div>
+              </div>
+              <div class="glass rounded-3xl p-6 text-white">
+                <div class="text-4xl font-black text-pink-400 mb-2">98</div>
+                <div class="text-white/80">性能评分</div>
+                <div class="text-white/60 text-sm mt-1">Lighthouse 评分</div>
+              </div>
+              <div class="glass rounded-3xl p-6 text-white">
+                <div class="text-4xl font-black text-blue-400 mb-2">50+</div>
+                <div class="text-white/80">组件数量</div>
+                <div class="text-white/60 text-sm mt-1">可复用组件</div>
+              </div>
+              <div class="glass rounded-3xl p-6 text-white">
+                <div class="text-4xl font-black text-green-400 mb-2">120</div>
+                <div class="text-white/80">包大小 KB</div>
+                <div class="text-white/60 text-sm mt-1">gzipped</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 交互演示区域 -->
+        <section class="py-20 px-6">
+          <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+              <h2 class="text-5xl md:text-6xl font-black text-white mb-6">
+                交互体验
+              </h2>
+              <p class="text-xl text-white/80 max-w-3xl mx-auto">
+                感受现代前端技术带来的流畅交互
+              </p>
+            </div>
+            
+            <!-- 交互演示网格 -->
+            <div class="grid md:grid-cols-2 gap-8">
+              <!-- 主题切换演示 -->
+              <div class="glass modern-card rounded-3xl p-8 text-white">
+                <h3 class="text-2xl font-bold mb-6 flex items-center">
+                  <div class="icon-container-lg mr-3">
+                    <span class="icon-[mdi--palette] text-3xl"></span>
+                  </div>
+                  主题切换
+                </h3>
+                <div class="space-y-4">
+                  <div class="flex items-center justify-between">
+                    <span>当前主题</span>
+                    <div class="glass-dark rounded-full px-4 py-2" x-text="currentTheme"></div>
+                  </div>
+                  <div class="flex gap-3">
+                    <template x-for="theme in themes" :key="theme">
+                      <button class="glass-dark rounded-2xl px-4 py-2 hover:scale-105 transition-all duration-300"
+                              :class="currentTheme === theme ? 'ring-2 ring-white/50' : ''"
+                              @click="currentTheme = theme"
+                              x-text="theme"></button>
+                    </template>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 动画计数器 -->
+              <div class="glass modern-card rounded-3xl p-8 text-white">
+                <h3 class="text-2xl font-bold mb-6 flex items-center">
+                  <div class="icon-container-lg mr-3">
+                    <span class="icon-[mdi--counter] text-3xl"></span>
+                  </div>
+                  动画计数器
+                </h3>
+                <div class="text-center" x-data="{ localCounter: 0 }">
+                  <div class="text-6xl font-black mb-4 gradient-text" x-text="localCounter"></div>
+                  <div class="flex gap-3 justify-center">
+                    <button class="glass-dark rounded-2xl px-6 py-3 hover:scale-105 transition-all duration-300"
+                            @click="localCounter--">
+                      <div class="icon-container-sm">
+                        <span class="icon-[mdi--minus] text-xl"></span>
+                      </div>
+                    </button>
+                    <button class="glass-dark rounded-2xl px-6 py-3 hover:scale-105 transition-all duration-300"
+                            @click="localCounter = 0">
+                      <div class="icon-container-sm">
+                        <span class="icon-[mdi--refresh] text-xl"></span>
+                      </div>
+                    </button>
+                    <button class="glass-dark rounded-2xl px-6 py-3 hover:scale-105 transition-all duration-300"
+                            @click="localCounter++">
+                      <div class="icon-container-sm">
+                        <span class="icon-[mdi--plus] text-xl"></span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 图标展示 -->
+              <div class="glass modern-card rounded-3xl p-8 text-white md:col-span-2">
+                <h3 class="text-2xl font-bold mb-6 flex items-center">
+                  <div class="icon-container-lg mr-3">
+                    <span class="icon-[mdi--star] text-3xl"></span>
+                  </div>
+                  Iconify 图标库
+                </h3>
+                <div class="grid grid-cols-6 md:grid-cols-12 gap-4">
+                  <template x-for="icon in iconList" :key="icon">
+                    <div class="glass-dark rounded-2xl p-4 flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer group">
+                      <div class="icon-container-md">
+                        <span :class="icon" class="text-2xl group-hover:rotate-12 transition-transform"></span>
+                      </div>
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+
+      <!-- 现代化页脚 -->
+      <footer class="py-20 px-6 relative">
+        <div class="max-w-7xl mx-auto">
+          <!-- 页脚主要内容 -->
+          <div class="glass rounded-3xl p-12 text-white text-center">
+            <div class="mb-8">
+              <h3 class="text-4xl md:text-5xl font-black mb-4 gradient-text">
+                Sky Theme Demo
+              </h3>
+              <p class="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
+                现代化 Halo 主题，让您的博客焕发新生
+              </p>
+            </div>
+            
+            <!-- 技术栈图标 -->
+            <div class="flex justify-center gap-4 mb-8">
+              <template x-for="tech in techStack" :key="tech.name">
+                <div class="glass-dark rounded-2xl p-4 hover:scale-110 transition-all duration-300 cursor-pointer group">
+                  <div class="icon-container-md">
+                    <span :class="tech.icon" class="text-2xl group-hover:rotate-12 transition-transform"></span>
+                  </div>
+                </div>
+              </template>
+            </div>
+            
+            <!-- 社交链接 -->
+            <div class="flex justify-center gap-4 mb-8">
+              <a href="#" class="glass-dark rounded-2xl px-6 py-3 hover:scale-105 transition-all duration-300 group">
+                <div class="icon-container-sm inline-flex mr-2">
+                  <span class="icon-[mdi--github] text-xl group-hover:scale-110 transition-transform"></span>
+                </div>
+                GitHub
+              </a>
+              <a href="#" class="glass-dark rounded-2xl px-6 py-3 hover:scale-105 transition-all duration-300 group">
+                <div class="icon-container-sm inline-flex mr-2">
+                  <span class="icon-[mdi--book-open] text-xl group-hover:scale-110 transition-transform"></span>
+                </div>
+                文档
+              </a>
+              <a href="#" class="glass-dark rounded-2xl px-6 py-3 hover:scale-105 transition-all duration-300 group">
+                <div class="icon-container-sm inline-flex mr-2">
+                  <span class="icon-[mdi--download] text-xl group-hover:scale-110 transition-transform"></span>
+                </div>
+                下载
+              </a>
+            </div>
+            
+            <!-- 版权信息 -->
+            <div class="text-white/60 text-sm">
+              <p class="mb-2">© 2024 Sky Theme Demo. 基于 MIT 许可证开源</p>
+              <p>Powered by <span class="text-white/80 font-medium">Halo</span> · Built with <span class="text-white/80 font-medium">❤️</span></p>
+            </div>
+            
+            <!-- 回到顶部按钮 -->
+            <button @click="scrollToTop()" 
+                    class="glass-dark rounded-full w-12 h-12 flex items-center justify-center hover:scale-110 transition-all duration-300 group mt-8 mx-auto">
+              <div class="icon-container-sm">
+                <span class="icon-[mdi--arrow-up] text-xl group-hover:-translate-y-1 transition-transform"></span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </footer>
     </div>
+
+    <!-- Alpine.js 数据和方法 -->
+    <script>
+      function modernTechDemo() {
+        return {
+          // 主题数据
+          currentTheme: 'Sky',
+          themes: ['Sky', 'Ocean', 'Forest', 'Sunset', 'Galaxy'],
+          
+          // 图标列表
+          iconList: [
+            'icon-[mdi--home]',
+            'icon-[mdi--account]',
+            'icon-[mdi--cog]',
+            'icon-[mdi--heart]',
+            'icon-[mdi--star]',
+            'icon-[mdi--magnify]',
+            'icon-[mdi--email]',
+            'icon-[mdi--phone]',
+            'icon-[mdi--calendar]',
+            'icon-[mdi--clock]',
+            'icon-[mdi--download]',
+            'icon-[mdi--upload]'
+          ],
+          
+          // 现代化功能特性数据
+          features: [
+            {
+              title: '极速构建',
+              description: '基于 Vite 的闪电般构建速度，热重载让开发更高效',
+              icon: 'icon-[mdi--rocket-launch]',
+              tags: ['Vite', '热重载', '快速'],
+              hovered: false
+            },
+            {
+              title: '现代设计',
+              description: '采用玻璃拟态和渐变动画，打造视觉震撼的用户界面',
+              icon: 'icon-[mdi--palette]',
+              tags: ['玻璃拟态', '动画', '渐变'],
+              hovered: false
+            },
+            {
+              title: '响应式布局',
+              description: '完美适配各种设备尺寸，从手机到桌面的一致体验',
+              icon: 'icon-[mdi--responsive]',
+              tags: ['移动端', '桌面端', '自适应'],
+              hovered: false
+            },
+            {
+              title: '组件化开发',
+              description: 'DaisyUI 组件库提供丰富的 UI 组件，开发更便捷',
+              icon: 'icon-[mdi--puzzle]',
+              tags: ['DaisyUI', '组件库', '模块化'],
+              hovered: false
+            },
+            {
+              title: '轻量交互',
+              description: 'Alpine.js 提供声明式交互，无需复杂的构建配置',
+              icon: 'icon-[mdi--lightning-bolt]',
+              tags: ['Alpine.js', '轻量级', '声明式'],
+              hovered: false
+            },
+            {
+              title: '类型安全',
+              description: 'TypeScript 支持让代码更可靠，开发体验更佳',
+              icon: 'icon-[mdi--shield-check]',
+              tags: ['TypeScript', '类型检查', '可靠'],
+              hovered: false
+            }
+          ],
+          
+          // 现代化技术栈
+          techStack: [
+            { name: 'Vite', icon: 'icon-[logos--vitejs]', hovered: false },
+            { name: 'Tailwind CSS', icon: 'icon-[logos--tailwindcss-icon]', hovered: false },
+            { name: 'DaisyUI', icon: 'icon-[simple-icons--daisyui]', hovered: false },
+            { name: 'Alpine.js', icon: 'icon-[logos--alpinejs-icon]', hovered: false },
+            { name: 'TypeScript', icon: 'icon-[logos--typescript-icon]', hovered: false },
+            { name: 'Iconify', icon: 'icon-[simple-icons--iconify]', hovered: false }
+          ],
+          
+          // 现代化技术详情
+          techDetails: [
+            {
+              name: 'Vite',
+              icon: 'icon-[logos--vitejs]',
+              version: 'v5.0.0',
+              description: '下一代前端构建工具，提供极速的开发体验和优化的生产构建',
+              proficiency: 95
+            },
+            {
+              name: 'Tailwind CSS',
+              icon: 'icon-[logos--tailwindcss-icon]',
+              version: 'v3.4.0',
+              description: '原子化CSS框架，通过组合小的工具类快速构建现代化界面',
+              proficiency: 92
+            },
+            {
+              name: 'DaisyUI',
+              icon: 'icon-[simple-icons--daisyui]',
+              version: 'v4.6.0',
+              description: '基于Tailwind的语义化组件库，提供丰富的预设计组件',
+              proficiency: 88
+            },
+            {
+              name: 'Alpine.js',
+              icon: 'icon-[logos--alpinejs-icon]',
+              version: 'v3.13.0',
+              description: '轻量级响应式JavaScript框架，提供声明式的交互体验',
+              proficiency: 85
+            },
+            {
+              name: 'TypeScript',
+              icon: 'icon-[logos--typescript-icon]',
+              version: 'v5.3.0',
+              description: 'JavaScript的超集，提供静态类型检查和更好的开发体验',
+              proficiency: 90
+            },
+            {
+              name: 'Iconify',
+              icon: 'icon-[simple-icons--iconify]',
+              version: 'latest',
+              description: '统一的图标框架，支持100+图标集，按需加载',
+              proficiency: 93
+            }
+          ],
+          
+
+          
+          // 现代化方法
+          init() {
+            this.initTheme();
+            this.animateCounters();
+          },
+          
+          initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            this.currentTheme = savedTheme;
+            document.documentElement.setAttribute('data-theme', savedTheme);
+          },
+          
+          toggleTheme() {
+            const currentIndex = this.themes.indexOf(this.currentTheme);
+            const nextIndex = (currentIndex + 1) % this.themes.length;
+            const newTheme = this.themes[nextIndex];
+            
+            this.currentTheme = newTheme;
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+          },
+          
+          animateCounters() {
+            const targets = {
+              codeLines: 5000,
+              performance: 98,
+              components: 50,
+              bundleSize: 120
+            };
+            
+            Object.keys(targets).forEach(key => {
+              const target = targets[key];
+              const duration = 2000;
+              const increment = target / (duration / 16);
+              let current = 0;
+              
+              const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                  current = target;
+                  clearInterval(timer);
+                }
+              }, 16);
+            });
+          },
+          
+          scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }
+      }
+    </script>
   </th:block>
 </html>

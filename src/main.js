@@ -1,5 +1,5 @@
 /**
- * Sky Theme - 主要 JavaScript 文件
+ * Sky Theme Demo - 主要 JavaScript 文件
  * 集成 Alpine.js 和 DaisyUI
  */
 
